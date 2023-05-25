@@ -26,7 +26,7 @@ class FilmControllerTest {
 
 
     @Test
-    void addFilm() throws Exception {
+    void testAddFilm() throws Exception {
         Film film = Film.builder()
                 .id(1)
                 .name("Test")
@@ -42,7 +42,7 @@ class FilmControllerTest {
     }
 
     @Test
-    void addNullNameFilm() throws Exception {
+    void testAddNullNameFilm() throws Exception {
         Film film = Film.builder()
                 .id(1)
                 .name("")
@@ -58,11 +58,14 @@ class FilmControllerTest {
     }
 
     @Test
-    void addMaxDescrFilm() throws Exception {
+    void testAddMaxDescrFilm() throws Exception {
         Film film = Film.builder()
                 .id(1)
                 .name("Test1")
-                .description("111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111")
+                .description("11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111" +
+                        "1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111" +
+                        "1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111" +
+                        "11111111111111111111111111")
                 .duration(100)
                 .releaseDate(LocalDate.of(2012, 5, 14))
                 .build();
@@ -74,7 +77,7 @@ class FilmControllerTest {
     }
 
     @Test
-    void addEarlyFilm() throws Exception {
+    void testAddEarlyFilm() throws Exception {
         Film film = Film.builder()
                 .id(1)
                 .name("Test1")
@@ -90,7 +93,7 @@ class FilmControllerTest {
     }
 
     @Test
-    void addZeroDurationFilm() throws Exception {
+    void testAddZeroDurationFilm() throws Exception {
         Film film = Film.builder()
                 .id(1)
                 .name("")
@@ -106,7 +109,7 @@ class FilmControllerTest {
     }
 
     @Test
-    void addBadDurationFilm() throws Exception {
+    void testAddBadDurationFilm() throws Exception {
         Film film = Film.builder()
                 .id(1)
                 .name("Go")

@@ -26,7 +26,7 @@ class UserControllerTest {
     private MockMvc mockMvc;
 
     @Test
-    void addUser() throws Exception {
+    void testAddUser() throws Exception {
         User user = User.builder()
                 .id(1)
                 .name("mikhail")
@@ -42,7 +42,7 @@ class UserControllerTest {
     }
 
     @Test
-    void addBadEmailUser() throws Exception {
+    void testAddBadEmailUser() throws Exception {
         User user = User.builder()
                 .id(1)
                 .name("mikhail")
@@ -58,7 +58,7 @@ class UserControllerTest {
     }
 
     @Test
-    void addNullLoginUser() throws Exception {
+    void testAddNullLoginUser() throws Exception {
         User user = User.builder()
                 .id(1)
                 .name("mikhail")
@@ -74,7 +74,7 @@ class UserControllerTest {
     }
 
     @Test
-    void addBadLoginUser() throws Exception {
+    void testAddBadLoginUser() throws Exception {
         User user = User.builder()
                 .id(1)
                 .name("mikhail")
@@ -90,7 +90,7 @@ class UserControllerTest {
     }
 
     @Test
-    void addFutureBDUser() throws Exception {
+    void testAddFutureBDUser() throws Exception {
         User user = User.builder()
                 .id(1)
                 .name("mikhail")

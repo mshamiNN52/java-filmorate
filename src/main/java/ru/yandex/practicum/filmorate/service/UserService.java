@@ -69,8 +69,9 @@ public class UserService {
         User friend = userStorage.getUserByID(idFriend);
         Set<Integer> friends = user.getFriends();
         for (int friendID : friends) {
-            if (friend.getFriends().contains(friendID))
+            if (friend.getFriends().contains(friendID)) {
                 commonFriendsList.add(userStorage.getUserByID(friendID));
+            }
         }
         return commonFriendsList;
     }

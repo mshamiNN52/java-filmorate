@@ -12,15 +12,13 @@ import java.util.*;
 @RequiredArgsConstructor
 public class FilmService {
 
-    Comparator<Film> filmComparator = new Comparator<Film>() {
-        @Override
-        public int compare(Film o1, Film o2) {
-            if (o1.getLikes().size() == 0 && o2.getLikes().size() == 0) {
-                return 1;
-            }
-            return o2.getLikes().size() - o1.getLikes().size();
+    Comparator<Film> filmComparator = (o1, o2) -> {
+        if (o1.getLikes().size() == 0 && o2.getLikes().size() == 0) {
+            return 1;
         }
+        return o2.getLikes().size() - o1.getLikes().size();
     };
+
     @Autowired
     private final FilmStorage filmStorage;
 
@@ -57,7 +55,7 @@ public class FilmService {
     public List<Film> filmRate(int count) {
         ArrayList<Film> films = filmStorage.getAllFilms();
         TreeMap<Film, Integer> likes = new TreeMap<>(filmComparator);
-        List<Film> ratesList = new ArrayList<Film>();
+        List<Film> ratesList = new ArrayList<>();
         for (Film film : films) {
             likes.put(film, film.getId());
         }

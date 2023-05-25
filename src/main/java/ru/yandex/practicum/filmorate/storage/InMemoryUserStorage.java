@@ -14,7 +14,7 @@ import java.util.HashMap;
 
 @Component
 public class InMemoryUserStorage implements UserStorage {
-    private static final Logger log = LoggerFactory.getLogger(UserController.class);
+    private static final Logger log = LoggerFactory.getLogger(InMemoryUserStorage.class);
     private final HashMap<Integer, User> users = new HashMap<>();
     private int idU = 1;
 
@@ -28,7 +28,7 @@ public class InMemoryUserStorage implements UserStorage {
         if (user.getName() == null || user.getName() == "") {
             user.setName(user.getLogin());
         }
-        user.setId(idU++);
+        user.setId(getNextIdU());
         users.put(user.getId(), user);
         log.info("Пользователь добавлен");
         return user;
@@ -62,5 +62,10 @@ public class InMemoryUserStorage implements UserStorage {
             throw new NotFoundException(HttpStatus.NOT_FOUND, "Пользователь не найден");
         }
         return users.get(id);
+    }
+
+    private Integer getNextIdU() {
+        this.idU++;
+        return idU;
     }
 }
