@@ -1,11 +1,11 @@
-package ru.yandex.practicum.filmorate.controller.validators;
+package ru.yandex.practicum.filmorate.validators;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import java.time.LocalDate;
 
 public class ValidateRelDate implements ConstraintValidator<DateReleaseValidator, LocalDate> {
-    static final LocalDate MIN_DATE_RELEASE = LocalDate.of(1895, 12, 28);
+    private static final LocalDate MIN_DATE_RELEASE = LocalDate.of(1895, 12, 28);
 
     @Override
     public void initialize(DateReleaseValidator dateReleaseValidator) {
