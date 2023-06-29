@@ -1,6 +1,6 @@
 # java-filmorate
 Template repository for Filmorate project.
-diagram.png
+![ER DIAG] diagram.png
 1/ Получить фильм по ID select * from films where films.id = ID
 2/ Получить все фильмы select * from films
 3/ Получить фильмы топ 10 фильмов по лайкам select f.name, count(fl.film_id) from films as f left join film_likes as fl on fl.film_id = f.id group by f.name order by count(fl.film_id) limit 10
