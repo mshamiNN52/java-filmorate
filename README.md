@@ -1,6 +1,6 @@
 # java-filmorate
 Template repository for Filmorate project.
-![ER DIAG] diagram.png
+[![ER DIAG] diagram.png](https://github.com/mshamiNN52/java-filmorate/blob/5b4714d14979171fdf0c904a4b979c233d15314d/diagram.png)
 1. Получить фильм по ID
 select * 
 from films
