@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
+import ru.yandex.practicum.filmorate.controller.UserController;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.validators.NotFoundException;
 import ru.yandex.practicum.filmorate.validators.ValidationException;
@@ -13,9 +14,9 @@ import java.util.HashMap;
 
 @Component
 public class InMemoryUserStorage implements UserStorage {
-    private static final Logger log = LoggerFactory.getLogger(InMemoryUserStorage.class);
+    private static final Logger log = LoggerFactory.getLogger(UserController.class);
     private final HashMap<Integer, User> users = new HashMap<>();
-    private int idU = 0;
+    private int idU = 1;
 
     @Override
     public User createUser(User user) {
@@ -27,7 +28,7 @@ public class InMemoryUserStorage implements UserStorage {
         if (user.getName() == null || user.getName() == "") {
             user.setName(user.getLogin());
         }
-        user.setId(getNextIdU());
+        user.setId(idU++);
         users.put(user.getId(), user);
         log.info("Пользователь добавлен");
         return user;
@@ -39,7 +40,7 @@ public class InMemoryUserStorage implements UserStorage {
     }
 
     @Override
-    public User updateUser(User user) {
+    public User editUser(User user) {
         if (!users.containsKey(user.getId())) {
             log.warn("Пользователь не найден");
             throw new NotFoundException(HttpStatus.NOT_FOUND, "Пользователь не найден");
@@ -61,10 +62,5 @@ public class InMemoryUserStorage implements UserStorage {
             throw new NotFoundException(HttpStatus.NOT_FOUND, "Пользователь не найден");
         }
         return users.get(id);
-    }
-
-    private Integer getNextIdU() {
-        this.idU++;
-        return idU;
     }
 }

@@ -31,8 +31,8 @@ public class UserController {
     }
 
     @PutMapping
-    public User updateUser(@RequestBody User user) {
-        return userService.updateUser(user);
+    public User saveUser(@RequestBody User user) {
+        return userService.saveUser(user);
     }
 
     @PutMapping("{id}/friends/{friendId}")
