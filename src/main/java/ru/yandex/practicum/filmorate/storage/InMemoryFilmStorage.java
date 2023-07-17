@@ -15,7 +15,7 @@ import java.util.HashMap;
 public class InMemoryFilmStorage implements FilmStorage {
     private static final Logger log = LoggerFactory.getLogger(InMemoryFilmStorage.class);
     private final HashMap<Integer, Film> films = new HashMap<>();
-    private int id = 0;
+    private int idF = 1;
 
     @Override
     public Film createFilm(Film film) {
@@ -23,7 +23,7 @@ public class InMemoryFilmStorage implements FilmStorage {
             log.warn("Такой фильм уже существует");
             throw new ValidationException(HttpStatus.BAD_REQUEST, "Такой фильм уже есть");
         }
-        film.setId(getNextId());
+        film.setId(idF++);
         films.put(film.getId(), film);
         log.info("Фильм добавлен {}", film);
         return film;
@@ -40,7 +40,7 @@ public class InMemoryFilmStorage implements FilmStorage {
     }
 
     @Override
-    public Film updateFilm(Film film) {
+    public Film editFilm(Film film) {
         if (!films.containsKey(film.getId())) {
             log.warn("Фильм не найден");
             throw new NotFoundException(HttpStatus.NOT_FOUND, "Фильм не найден");
@@ -62,10 +62,5 @@ public class InMemoryFilmStorage implements FilmStorage {
             throw new NotFoundException(HttpStatus.NOT_FOUND, "Фильм не найден");
         }
         return films.get(id);
-    }
-
-    private Integer getNextId() {
-        this.id++;
-        return id;
     }
 }

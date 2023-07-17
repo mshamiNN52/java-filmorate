@@ -35,13 +35,8 @@ public class FilmController {
     }
 
     @PutMapping
-    public Film updateFilm(@Valid @RequestBody Film film) {
-        return filmService.updateFilm(film);
-    }
-
-    @DeleteMapping
-    public void deleteFilm(@RequestBody Film film) {
-        filmService.deleteFilm(film);
+    public Film saveFilm(@Valid @RequestBody Film film) {
+        return filmService.editFilm(film);
     }
 
     @PutMapping("/{id}/like/{userId}")

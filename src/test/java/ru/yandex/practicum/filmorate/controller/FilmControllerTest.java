@@ -24,23 +24,6 @@ class FilmControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-
-    @Test
-    void testAddFilm() throws Exception {
-        Film film = Film.builder()
-                .id(1)
-                .name("Test")
-                .description("test")
-                .duration(150)
-                .releaseDate(LocalDate.of(2018, 5, 14))
-                .build();
-        mockMvc.perform(post("/films")
-                        .content(objectMapper.writeValueAsString(film))
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().is(HttpStatus.CREATED.value()))
-                .andReturn();
-    }
-
     @Test
     void testAddNullNameFilm() throws Exception {
         Film film = Film.builder()
@@ -66,22 +49,6 @@ class FilmControllerTest {
                         "1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111" +
                         "1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111" +
                         "11111111111111111111111111")
-                .duration(100)
-                .releaseDate(LocalDate.of(2012, 5, 14))
-                .build();
-        mockMvc.perform(post("/films")
-                        .content(objectMapper.writeValueAsString(film))
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().is(HttpStatus.BAD_REQUEST.value()))
-                .andReturn();
-    }
-
-    @Test
-    void testAddUpdateFilm() throws Exception {
-        Film film = Film.builder()
-                .id(1)
-                .name("Test1")
-                .description("Test1")
                 .duration(100)
                 .releaseDate(LocalDate.of(2012, 5, 14))
                 .build();

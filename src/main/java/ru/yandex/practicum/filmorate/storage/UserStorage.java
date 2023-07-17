@@ -9,7 +9,7 @@ public interface UserStorage {
 
     void deleteUser(User user);
 
-    User updateUser(User user);
+    User editUser(User user);
 
     ArrayList<User> getAllUsers();
 
