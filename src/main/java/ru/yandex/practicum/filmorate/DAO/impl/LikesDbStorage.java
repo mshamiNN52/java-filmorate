@@ -14,7 +14,7 @@ import ru.yandex.practicum.filmorate.DAO.LikesStorage;
 @Slf4j
 @Component("LikesDbStorage")
 @RequiredArgsConstructor
-public class LikesDbStorage implements LikesStorage{
+public class LikesDbStorage implements LikesStorage {
 
 
     private final JdbcTemplate jdbcTemplate;
