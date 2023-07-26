@@ -12,7 +12,7 @@ public interface FilmDbStorage {
     List<Film> getAllFilms();
 
     Film editFilm(Film film);
-    
+
     List<Film> filmRate(int count);
 
     void delete(int id);
