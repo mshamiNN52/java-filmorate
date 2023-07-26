@@ -8,7 +8,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.DAO.FilmDbStorage;
 import ru.yandex.practicum.filmorate.DAO.GenreDbStorage;
-import ru.yandex.practicum.filmorate.DAO.RatingDbStorage;
+import ru.yandex.practicum.filmorate.DAO.MpaDbStorage;
 import ru.yandex.practicum.filmorate.DAO.UserDbStorage;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.Genre;
@@ -27,16 +27,16 @@ import java.util.Set;
 public class FilmDbStorageImpl implements FilmDbStorage {
     private final JdbcTemplate jdbcTemplate;
     private final GenreDbStorage genreDbStorage;
-    private final RatingDbStorage ratingDbStorage;
+    private final MpaDbStorage mpaDbStorage;
     private final UserDbStorage userDbStorage;
 
     public FilmDbStorageImpl(JdbcTemplate jdbcTemplate,
                              GenreDbStorage genreDbStorage,
-                             RatingDbStorage ratingDbStorage,
+                             MpaDbStorage mpaDbStorage,
                              UserDbStorage userDbStorage) {
         this.jdbcTemplate = jdbcTemplate;
         this.genreDbStorage = genreDbStorage;
-        this.ratingDbStorage = ratingDbStorage;
+        this.mpaDbStorage = mpaDbStorage;
         this.userDbStorage = userDbStorage;
     }
 
@@ -46,7 +46,7 @@ public class FilmDbStorageImpl implements FilmDbStorage {
                 .description(resultSet.getString("description"))
                 .duration(resultSet.getLong("duration"))
                 .releaseDate(resultSet.getDate("release_Date").toLocalDate())
-                .mpa(ratingDbStorage.getRatingById(resultSet.getInt("rating_id"))).build();
+                .mpa(mpaDbStorage.getRatingById(resultSet.getInt("rating_id"))).build();
     }
 
     @Override
@@ -136,22 +136,6 @@ public class FilmDbStorageImpl implements FilmDbStorage {
     }
 
     @Override
-    public void likeFilm(int filmId, int userId) {
-        findFilmById(filmId);
-        userDbStorage.findUserById(userId);
-        String sqlQuery = "merge into film_likes (film_id, user_id, date_like) key (film_id) " + "values (?, ?, ?)";
-        jdbcTemplate.update(sqlQuery, filmId, userId, LocalDateTime.now());
-    }
-
-    @Override
-    public void deleteLike(int filmId, int userId) {
-        findFilmById(filmId);
-        userDbStorage.findUserById(userId);
-        String sqlQuery = "delete from film_likes " + "where film_id = ? and user_id = ?";
-        jdbcTemplate.update(sqlQuery, filmId, userId);
-    }
-
-    @Override
     public List<Film> filmRate(int count) {
         String sqlQuery = "select id, name, description, duration, release_date, rating_id from films as f left join film_likes as fl on fl.film_id = f.id "
                 + "group by f.name "
@@ -167,5 +151,26 @@ public class FilmDbStorageImpl implements FilmDbStorage {
             }
         }
         return films;
+    }
+
+    @Override
+    public void delete(int id) {
+        String sqlQueryDelete = "DELETE FROM films WHERE id = ?";
+        jdbcTemplate.update(sqlQueryDelete, id);
+    }
+
+    public void likeFilm(int filmId, int userId) {
+        findFilmById(filmId);
+        userDbStorage.findUserById(userId);
+        String sqlQuery = "merge into film_likes (film_id, user_id, date_like) key (film_id) " + "values (?, ?, ?)";
+        jdbcTemplate.update(sqlQuery, filmId, userId, LocalDateTime.now());
+    }
+
+
+    public void deleteLike(int filmId, int userId) {
+        findFilmById(filmId);
+        userDbStorage.findUserById(userId);
+        String sqlQuery = "delete from film_likes " + "where film_id = ? and user_id = ?";
+        jdbcTemplate.update(sqlQuery, filmId, userId);
     }
 }

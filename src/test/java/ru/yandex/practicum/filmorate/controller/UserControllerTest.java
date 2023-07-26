@@ -104,5 +104,4 @@ class UserControllerTest {
                 .andExpect(status().is(HttpStatus.BAD_REQUEST.value()))
                 .andReturn();
     }
-
 }

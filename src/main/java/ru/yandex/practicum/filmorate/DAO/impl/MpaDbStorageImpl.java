@@ -4,8 +4,8 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
-import ru.yandex.practicum.filmorate.DAO.RatingDbStorage;
-import ru.yandex.practicum.filmorate.model.Rating;
+import ru.yandex.practicum.filmorate.DAO.MpaDbStorage;
+import ru.yandex.practicum.filmorate.model.Mpa;
 import ru.yandex.practicum.filmorate.validators.NotFoundException;
 
 import java.sql.ResultSet;
@@ -14,27 +14,27 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class RatingDbStorageImpl implements RatingDbStorage {
+public class MpaDbStorageImpl implements MpaDbStorage {
 
     private final JdbcTemplate jdbcTemplate;
 
-    public RatingDbStorageImpl(JdbcTemplate jdbcTemplate) {
+    public MpaDbStorageImpl(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    private Rating mapRowToRating(ResultSet resultSet, int rowNum) throws SQLException {
-        return Rating.builder().id(resultSet.getInt("id")).name(resultSet.getString("name")).build();
+    private Mpa mapRowToRating(ResultSet resultSet, int rowNum) throws SQLException {
+        return Mpa.builder().id(resultSet.getInt("id")).name(resultSet.getString("name")).build();
     }
 
     @Override
-    public List<Rating> findAllRating() {
+    public List<Mpa> findAllRating() {
         String sqlQuery = "select id, name from MPA";
-        return (ArrayList<Rating>) jdbcTemplate.query(sqlQuery, this::mapRowToRating);
+        return (ArrayList<Mpa>) jdbcTemplate.query(sqlQuery, this::mapRowToRating);
 
     }
 
     @Override
-    public Rating getRatingById(int id) {
+    public Mpa getRatingById(int id) {
         String sqlQuery = "select id, name " + "from MPA where id = ?";
         try {
             jdbcTemplate.queryForObject(sqlQuery, this::mapRowToRating, id);

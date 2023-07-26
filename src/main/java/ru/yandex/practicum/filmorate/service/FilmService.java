@@ -1,7 +1,9 @@
 package ru.yandex.practicum.filmorate.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 import ru.yandex.practicum.filmorate.DAO.FilmDbStorage;
 import ru.yandex.practicum.filmorate.model.Film;
 
@@ -44,4 +46,5 @@ public class FilmService {
         return filmDbStorage.findFilmById(id);
     }
 
+    public void deleteFilm(int id) {filmDbStorage.delete(id);}
 }

@@ -12,11 +12,11 @@ public interface FilmDbStorage {
     List<Film> getAllFilms();
 
     Film editFilm(Film film);
+    List<Film> filmRate(int count);
+
+    void delete(int id);
 
     void likeFilm(int filmId, int userId);
 
     void deleteLike(int filmId, int userId);
-
-    List<Film> filmRate(int count);
-
 }

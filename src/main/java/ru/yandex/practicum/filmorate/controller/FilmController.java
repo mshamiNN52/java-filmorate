@@ -1,5 +1,6 @@
 package ru.yandex.practicum.filmorate.controller;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -10,6 +11,7 @@ import ru.yandex.practicum.filmorate.service.UserService;
 import javax.validation.Valid;
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequestMapping("/films")
 public class FilmController {
@@ -61,5 +63,12 @@ public class FilmController {
     @GetMapping("/{id}")
     public Film getFilm(@PathVariable("id") int id) {
         return filmService.findFilmById(id);
+    }
+
+    @DeleteMapping("/{filmId}")
+    public void deleteFilmById(@PathVariable int filmId) {
+        log.info("Удаление фильма по id:" + filmId + "...");
+        filmService.deleteFilm(filmId);
+        log.info("Фильм удален");
     }
 }
