@@ -1,15 +1,21 @@
 package ru.yandex.practicum.filmorate.service;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 import ru.yandex.practicum.filmorate.DAO.FriendshipDbStorage;
 import ru.yandex.practicum.filmorate.DAO.UserDbStorage;
+import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.User;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 
+@Slf4j
 @Service
 public class UserService {
     private final UserDbStorage userDbStorage;
@@ -71,4 +77,30 @@ public class UserService {
         return commonFriendsList;
     }
 
+    public Collection<Film> getRecommendations(int id) {
+        return userDbStorage.getRecommendations(id);
+    }
+
+    private boolean contains(int id) {
+        return userDbStorage.getAllUsers().contains(id);
+    }
+
+    public void deleteUser(int id) {
+        if (contains(id)) {
+            findAll()
+                    .stream()
+                    .forEach(user -> {
+                        deleteFriend(user.getId(), id);
+                        userDbStorage.getCommonFriends(id, user.getId())
+                                .stream()
+                                .forEach(userCommon -> {
+                                    deleteFriend(user.getId(), id);
+                                });
+                    });
+            userDbStorage.delete(id);
+        } else {
+            log.info("User с id " + id + " не найден");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+    }
 }

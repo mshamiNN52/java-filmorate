@@ -1,8 +1,17 @@
+drop table if exists MPA, FILMS, FRIENDSHIP, GENRE, FILM_GENRE, USERS, FILM_LIKES, DIRECTOR, FILM_DIRECTOR, feed;
+
 create table if not exists MPA
 (
     ID   INTEGER auto_increment,
     NAME CHARACTER VARYING(100),
     constraint "MPA_PK"
+        primary key (ID)
+);
+create table if not exists DIRECTOR
+(
+    ID   INTEGER auto_increment,
+    NAME CHARACTER VARYING(100),
+    constraint "DIRECTOR_PK"
         primary key (ID)
 );
 
@@ -66,12 +75,37 @@ create table if not exists FILM_LIKES
     USER_ID   INTEGER   not null,
     DATE_LIKE TIMESTAMP not null,
     constraint FILM_LIKES_PK
-        primary key (FILM_ID),
+        primary key (DATE_LIKE),
     constraint "film_likes_FILMS_ID_fk"
         foreign key (FILM_ID) references FILMS,
     constraint "film_likes_USERS_ID_fk"
         foreign key (USER_ID) references USERS
             on update cascade on delete cascade
 );
-
-
+create table if not exists FILM_DIRECTOR
+(
+    FILM_ID  INTEGER auto_increment,
+    DIRECTOR_ID INTEGER not null,
+    constraint FILM_DIRECTOR_PK
+        primary key (FILM_ID, DIRECTOR_ID),
+    constraint "film_director_FILMS_ID_fk"
+        foreign key (FILM_ID) references FILMS
+            on update cascade on delete cascade,
+    constraint "film_director_DIRECTOR_ID_fk"
+        foreign key (DIRECTOR_ID) references DIRECTOR
+            on update cascade on delete cascade
+);
+create table if not exists feed
+(
+    EVENT_ID INTEGER not null,
+    TIME_STAMP timestamp not null,
+    USER_ID INTEGER not null,
+    EVENT_TYPE CHARACTER VARYING not null,
+    OPERATION CHARACTER VARYING not null,
+    ENTITY_ID INTEGER not null,
+    constraint FEED_PK
+        primary key (EVENT_ID),
+    constraint "FEED_USERS_ID_fk"
+        foreign key (USER_ID) references USERS
+            on update cascade on delete cascade
+);

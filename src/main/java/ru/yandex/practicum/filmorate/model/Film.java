@@ -23,10 +23,11 @@ public class Film {
     @DateReleaseValidator(message = "Некорректная дата релиза")
     private final LocalDate releaseDate;
     private int id;
-    private Rating mpa;
+    private Mpa mpa;
     private Set<Genre> genres;
+    private Set<Director> directors;
 
-    public Film(String name, String description, Long duration, LocalDate releaseDate, int id, Rating mpa, Set<Genre> genres) {
+    public Film(String name, String description, Long duration, LocalDate releaseDate, int id, Mpa mpa, Set<Genre> genres, Set<Director> directors) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -34,6 +35,7 @@ public class Film {
         this.releaseDate = releaseDate;
         this.mpa = mpa;
         this.genres = genres;
+        this.directors = directors;
     }
 
     public Set<Genre> getGenres() {
@@ -41,5 +43,12 @@ public class Film {
             genres = new HashSet<>();
         }
         return genres;
+    }
+
+    public Set<Director> getDirectors() {
+        if (directors == null) {
+            directors = new HashSet<>();
+        }
+        return directors;
     }
 }

@@ -1,9 +1,10 @@
-INSERT INTO GENRE (ID, NAME) VALUES (1, 'Комедия');
-INSERT INTO GENRE (ID, NAME) VALUES (2, 'Драма');
-INSERT INTO GENRE (ID, NAME) VALUES (3, 'Мультфильм');
-INSERT INTO GENRE (ID, NAME) VALUES (4, 'Триллер');
-INSERT INTO GENRE (ID, NAME) VALUES (5, 'Документальный');
-INSERT INTO GENRE (ID, NAME) VALUES (6, 'Боевик');
+INSERT INTO GENRE (ID, NAME)
+VALUES (1, 'Комедия'),
+       (2, 'Драма'),
+       (3, 'Мультфильм'),
+       (4, 'Триллер'),
+       (5, 'Документальный'),
+       (6, 'Боевик');
 
 INSERT INTO MPA (ID, NAME) VALUES (1, 'G');
 INSERT INTO MPA (ID, NAME) VALUES (2, 'PG');

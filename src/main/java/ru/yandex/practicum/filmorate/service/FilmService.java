@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.DAO.FilmDbStorage;
 import ru.yandex.practicum.filmorate.model.Film;
 
+
 import java.util.List;
 
 @Service
@@ -36,12 +37,24 @@ public class FilmService {
         filmDbStorage.deleteLike(filmId, userId);
     }
 
-    public List<Film> filmRate(int count) {
-        return filmDbStorage.filmRate(count);
+    public List<Film> filmRate(int year, int genreId, int count) {
+        return filmDbStorage.filmRate(year, genreId, count);
+    }
+
+    public List<Film> filmDirector(int directorId, String sortBy) {
+        return filmDbStorage.filmDirector(directorId, sortBy);
     }
 
     public Film findFilmById(int id) {
         return filmDbStorage.findFilmById(id);
+    }
+
+    public List<Film> commonFilms(int userId, int friendId) {
+        return filmDbStorage.commonFilms(userId, friendId);
+    }
+
+    public void deleteFilm(int id) {
+        filmDbStorage.delete(id);
     }
 
 }

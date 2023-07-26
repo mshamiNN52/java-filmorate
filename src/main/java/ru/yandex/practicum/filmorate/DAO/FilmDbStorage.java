@@ -17,6 +17,11 @@ public interface FilmDbStorage {
 
     void deleteLike(int filmId, int userId);
 
-    List<Film> filmRate(int count);
+    List<Film> filmRate(int year, int genreId, int count);
 
+    List<Film> filmDirector(int directorId, String sortBy);
+
+    List<Film> commonFilms(int userId, int friendId);
+
+    void delete(int id);
 }

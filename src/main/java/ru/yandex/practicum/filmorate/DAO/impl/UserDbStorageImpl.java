@@ -1,12 +1,16 @@
 package ru.yandex.practicum.filmorate.DAO.impl;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
+import ru.yandex.practicum.filmorate.DAO.FilmDbStorage;
+import ru.yandex.practicum.filmorate.DAO.LikesStorage;
 import ru.yandex.practicum.filmorate.DAO.UserDbStorage;
+import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.validators.NotFoundException;
 
@@ -15,10 +19,16 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
 
+@Slf4j
 @Component
 public class UserDbStorageImpl implements UserDbStorage {
     private final JdbcTemplate jdbcTemplate;
+    FilmDbStorage filmDbStorage;
+    LikesStorage likesDbStorage;
 
     public UserDbStorageImpl(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
@@ -77,4 +87,46 @@ public class UserDbStorageImpl implements UserDbStorage {
         return (ArrayList<User>) jdbcTemplate.query(sqlQuery, this::mapRowToUser);
     }
 
+    @Override
+    public Collection<Film> getRecommendations(int id) {
+        Collection<Film> result = new HashSet<>();
+
+        Collection<Film> films = filmDbStorage.getAllFilms();
+        getAllUsers().forEach(user -> {
+            if (user.getId() != id) {
+                films.forEach(film -> {
+                    Integer userLikes = likesDbStorage.getAmountOfLikes(film.getId(), id);
+                    Integer otherUserLikes = likesDbStorage.getAmountOfLikes(film.getId(), user.getId());
+                    if (userLikes == 0 && otherUserLikes > 0) {
+                        result.add(film);
+                    }
+                });
+            }
+        });
+        return result;
+    }
+
+    @Override
+    public List<User> getCommonFriends(int id, int otherId) {
+        List<User> commonFriends = new ArrayList<>();
+        String sqlQueryCommonFriends = "SELECT u.* FROM userFriends f LEFT JOIN users u on f.friendsId = u.id " +
+                " WHERE f.userId= ? AND f.friendsId IN (SELECT ff.friendsId FROM userFriends ff WHERE ff.userId=?)";
+        try {
+            commonFriends = jdbcTemplate.query(sqlQueryCommonFriends, this::mapRowToUser, id, otherId);
+        } catch (EmptyResultDataAccessException e) {
+            log.info("В базе нет информации по запросу {}.  userId={}, friendsId={}",
+                    sqlQueryCommonFriends, id, otherId);
+        }
+        return commonFriends;
+    }
+
+    @Override
+    public void delete(int id) {
+        String sqlQueryDelete = "DELETE FROM users WHERE id = ?";
+        try {
+            jdbcTemplate.update(sqlQueryDelete, id);
+        } catch (EmptyResultDataAccessException e) {
+            log.info("В базе нет информации по запросу {}", sqlQueryDelete);
+        }
+    }
 }
